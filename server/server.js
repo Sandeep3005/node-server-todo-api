@@ -20,6 +20,14 @@ app.post('/todos', (req, res) =>{
   })
 });
 
+app.get('/todos', (req, res)=>{
+    Todos.find().then((docs)=>{
+      res.send({ docs })
+    }).catch((e) => {
+      res.status(400).send(e);
+    })
+});
+
 app.listen(8080, ()=>{
   console.log('App is up and running on port 8080');
 })
