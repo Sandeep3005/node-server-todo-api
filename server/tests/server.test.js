@@ -93,3 +93,32 @@ describe('GET /todos/id', () => {
       .end(done)
   })
 });
+
+describe('DELETE /todos/id', () => {
+  it('should delete one particular todo', (done)=>{
+    let testTodo = testTodos[0];
+    request(app)
+      .delete(`/todos/${testTodo._id}`)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.doc.text).toBe(testTodo.text)
+      })
+      .end(done)
+  });
+
+  it('should return 404 if todo not found', (done) => {
+    let testTodoId = new ObjectID();
+    request(app)
+      .delete(`/todos/${testTodoId}`)
+      .expect(404)
+      .end(done)
+  });
+
+  it('should return 404 if passed ID is not valid', (done)=>{
+    let requestUrl = '/todos/123';
+    request(app)
+      .delete(requestUrl)
+      .expect(404)
+      .end(done)
+  })
+})
